@@ -1,4 +1,3 @@
-we are pulling some code from another project to make
 a new compoenent called `<CapacityNode3dDebugger />` and we are using `*.page.tsx` files to view exmaples please create an example page and setup code to be organized and tidy
 
 
