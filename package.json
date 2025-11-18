@@ -1,15 +1,25 @@
 {
-  "name": "trace-capacity-visualizer",
-  "private": true,
-	"scripts":{
-		"start": "cosmos"
-	},
+  "name": "@tscircuit/trace-capacity-visualizer",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "cosmos",
+    "build:site": "cosmos-export",
+    "build": "tsup-node lib/index.ts --format esm --dts",
+    "format": "biome format --write .",
+    "format:check": "biome format ."
+  },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/three": "^0.170.0",
+    "biome": "^0.3.3",
     "react": "^19.2.0",
     "react-cosmos": "^7.0.0",
     "react-cosmos-plugin-vite": "^7.0.0",
     "react-dom": "^19.2.0",
+    "three": "^0.171.0",
+    "tsup": "^8.5.1",
     "vite": "^7.2.2"
   },
   "peerDependencies": {

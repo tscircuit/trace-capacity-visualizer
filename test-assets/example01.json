@@ -1,0 +1,1124 @@
+{
+  "meshNodes": [
+    {
+      "capacityMeshNodeId": "cmn_0",
+      "center": {
+        "x": 3.7847720000000002,
+        "y": -1.7996026029034198
+      },
+      "width": 9.93,
+      "height": 12.82920520580684,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_1",
+      "center": {
+        "x": -2.9227279999999993,
+        "y": -5.3575
+      },
+      "width": 3.4849999999999994,
+      "height": 19.285,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_2",
+      "center": {
+        "x": -2.3852279999999992,
+        "y": 11.145
+      },
+      "width": 4.56,
+      "height": 7.709999999999999,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_3",
+      "center": {
+        "x": 6.442272,
+        "y": 9.807500000000001
+      },
+      "width": 4.615,
+      "height": 10.385,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_4",
+      "center": {
+        "x": -7.321306647149842,
+        "y": -6.179968050960356
+      },
+      "width": 5.312157294299686,
+      "height": 4.025936101920712,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_5",
+      "center": {
+        "x": -9.957614,
+        "y": 7.372841999999999
+      },
+      "width": 5.084772000000001,
+      "height": 15.254316000000003,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_6",
+      "center": {
+        "x": -7.321306647149842,
+        "y": -11.903968050960355
+      },
+      "width": 5.312157294299686,
+      "height": 6.192063898079288,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_7",
+      "center": {
+        "x": 8.469281586933102,
+        "y": -11.60710260290342
+      },
+      "width": 8.061436826133797,
+      "height": 6.78579479419316,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_8",
+      "center": {
+        "x": -8.696306647149843,
+        "y": -2.2106580000000013
+      },
+      "width": 2.562157294299686,
+      "height": 3.912683999999997,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_9",
+      "center": {
+        "x": 0.8791675869331019,
+        "y": -11.60710260290342
+      },
+      "width": 4.118791173866203,
+      "height": 6.78579479419316,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_10",
+      "center": {
+        "x": 2.8747719999999974,
+        "y": 9.274999999999999
+      },
+      "width": 2.520000000000005,
+      "height": 0.8400000000000016,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_11",
+      "center": {
+        "x": 10.624886,
+        "y": -6.19060260290342
+      },
+      "width": 3.750228,
+      "height": 4.04720520580684,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_12",
+      "center": {
+        "x": 0.7547719999999978,
+        "y": 9.274999999999999
+      },
+      "width": 1.7199999999999944,
+      "height": 0.8400000000000016,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_13",
+      "center": {
+        "x": -11.238692647149843,
+        "y": -13.664726821657975
+      },
+      "width": 2.522614705700315,
+      "height": 2.670546356684051,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_14",
+      "center": {
+        "x": -11.238692647149843,
+        "y": -9.829453643315949
+      },
+      "width": 2.522614705700315,
+      "height": 2,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_15",
+      "center": {
+        "x": -11.238692647149843,
+        "y": -6.329453643315949
+      },
+      "width": 2.522614705700315,
+      "height": 2,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_16",
+      "center": {
+        "x": -11.238692647149843,
+        "y": -2.829453643315949
+      },
+      "width": 2.522614705700315,
+      "height": 2,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_17",
+      "center": {
+        "x": 3.6885631738662035,
+        "y": -13.35710260290342
+      },
+      "width": 1.5,
+      "height": 3.2857947941931602,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_18",
+      "center": {
+        "x": 2.6799999999999997,
+        "y": 11.815000000000001
+      },
+      "width": 2.520000000000005,
+      "height": 0.8400000000000016,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_19",
+      "center": {
+        "x": 10.624886,
+        "y": 14.0365
+      },
+      "width": 3.750228,
+      "height": 1.9269999999999996,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_20",
+      "center": {
+        "x": -4.172727999999999,
+        "y": 5.812500000000002
+      },
+      "width": 0.9849999999999994,
+      "height": 2.9549999999999983,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_21",
+      "center": {
+        "x": -2.4302279999999996,
+        "y": 5.7875000000000005
+      },
+      "width": 2.5,
+      "height": 3.005000000000001,
+      "layer": "top",
+      "availableZ": [
+        1,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_22",
+      "center": {
+        "x": -6.040227999999999,
+        "y": 14.0365
+      },
+      "width": 2.75,
+      "height": 1.9269999999999996,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_23",
+      "center": {
+        "x": -2.4302279999999996,
+        "y": 5.7875000000000005
+      },
+      "width": 2.5,
+      "height": 3.005000000000001,
+      "layer": "top",
+      "availableZ": [
+        2
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_24",
+      "center": {
+        "x": -0.6427279999999997,
+        "y": 5.952500000000001
+      },
+      "width": 1.0749999999999997,
+      "height": 2.6750000000000007,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_25",
+      "center": {
+        "x": 0.6573859999999989,
+        "y": 11.815000000000001
+      },
+      "width": 1.5252279999999967,
+      "height": 0.8400000000000016,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_26",
+      "center": {
+        "x": 0.32477200000000095,
+        "y": 13.6175
+      },
+      "width": 0.8600000000000008,
+      "height": 2.7650000000000006,
+      "layer": "top",
+      "availableZ": [
+        2
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_27",
+      "center": {
+        "x": -11.988692647149843,
+        "y": -11.579453643315949
+      },
+      "width": 1.022614705700315,
+      "height": 1.5,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_28",
+      "center": {
+        "x": -11.988692647149843,
+        "y": -8.079453643315949
+      },
+      "width": 1.022614705700315,
+      "height": 1.5,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_29",
+      "center": {
+        "x": -11.988692647149843,
+        "y": -4.579453643315949
+      },
+      "width": 1.022614705700315,
+      "height": 1.5,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_30",
+      "center": {
+        "x": -11.988692647149843,
+        "y": -1.041884821657976
+      },
+      "width": 1.022614705700315,
+      "height": 1.575137643315946,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_31",
+      "center": {
+        "x": 2.0147720000000002,
+        "y": 7.494999999999999
+      },
+      "width": 0.8399999999999999,
+      "height": 2.719999999999999,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_32",
+      "center": {
+        "x": 3.2847720000000002,
+        "y": 6.734999999999999
+      },
+      "width": 1.6999999999999997,
+      "height": 4.239999999999998,
+      "layer": "top",
+      "availableZ": [
+        1,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_33",
+      "center": {
+        "x": 3.2847720000000002,
+        "y": 6.734999999999999
+      },
+      "width": 1.6999999999999997,
+      "height": 4.239999999999998,
+      "layer": "top",
+      "availableZ": [
+        2
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_34",
+      "center": {
+        "x": 0.7447720000000004,
+        "y": 6.734999999999999
+      },
+      "width": 1.6999999999999997,
+      "height": 4.239999999999998,
+      "layer": "top",
+      "availableZ": [
+        1
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_35",
+      "center": {
+        "x": 0.7447720000000004,
+        "y": 6.734999999999999
+      },
+      "width": 1.6999999999999997,
+      "height": 4.239999999999998,
+      "layer": "top",
+      "availableZ": [
+        2
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_36",
+      "center": {
+        "x": 0.7447720000000004,
+        "y": 6.734999999999999
+      },
+      "width": 1.6999999999999997,
+      "height": 4.239999999999998,
+      "layer": "top",
+      "availableZ": [
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_37",
+      "center": {
+        "x": 2.0147720000000002,
+        "y": 10.545
+      },
+      "width": 0.8399999999999999,
+      "height": 1.6999999999999993,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_38",
+      "center": {
+        "x": 2.3522720000000006,
+        "y": 14.467500000000001
+      },
+      "width": 3.1949999999999985,
+      "height": 1.0649999999999995,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_39",
+      "center": {
+        "x": 1.0873859999999993,
+        "y": 13.085
+      },
+      "width": 0.6652279999999959,
+      "height": 1.6999999999999993,
+      "layer": "top",
+      "availableZ": [
+        2
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_40",
+      "center": {
+        "x": 2.0147720000000002,
+        "y": 13.085
+      },
+      "width": 0.8399999999999999,
+      "height": 1.6999999999999993,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_41",
+      "center": {
+        "x": -6.040227999999999,
+        "y": 0.643
+      },
+      "width": 2.75,
+      "height": 0.5399999999999996,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_42",
+      "center": {
+        "x": 0.324772000000001,
+        "y": 14.467500000000001
+      },
+      "width": 0.8600000000000009,
+      "height": 1.0650000000000013,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_43",
+      "center": {
+        "x": 0.7447720000000002,
+        "y": 6.734999999999999
+      },
+      "width": 1.7000000000000002,
+      "height": 0.8399999999999999,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_44",
+      "center": {
+        "x": 11.999886,
+        "y": 8.463000000000001
+      },
+      "width": 1.000228,
+      "height": 9.22,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_45",
+      "center": {
+        "x": 11.999886,
+        "y": -0.09699999999999953
+      },
+      "width": 1.000228,
+      "height": 7.9,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_46",
+      "center": {
+        "x": 10.124772,
+        "y": 0.643
+      },
+      "width": 2.7500000000000018,
+      "height": 0.5399999999999996,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_47",
+      "center": {
+        "x": -6.356893060790263,
+        "y": -8.500436101920712
+      },
+      "width": 0.39999999999999947,
+      "height": 0.615000000000002,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_48",
+      "center": {
+        "x": -6.040227999999999,
+        "y": 10.803
+      },
+      "width": 2.75,
+      "height": 0.5399999999999991,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_49",
+      "center": {
+        "x": -6.040227999999999,
+        "y": 8.263000000000002
+      },
+      "width": 2.75,
+      "height": 0.5400000000000009,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_50",
+      "center": {
+        "x": -6.040227999999999,
+        "y": 5.723000000000001
+      },
+      "width": 2.75,
+      "height": 0.5400000000000009,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_51",
+      "center": {
+        "x": -6.040227999999999,
+        "y": 3.183
+      },
+      "width": 2.75,
+      "height": 0.5400000000000009,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_52",
+      "center": {
+        "x": -6.040227999999999,
+        "y": -1.8969999999999998
+      },
+      "width": 2.75,
+      "height": 0.54,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_53",
+      "center": {
+        "x": 10.124772,
+        "y": -1.8969999999999998
+      },
+      "width": 2.75,
+      "height": 0.54,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_54",
+      "center": {
+        "x": 10.124772,
+        "y": 3.183
+      },
+      "width": 2.75,
+      "height": 0.5400000000000009,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_55",
+      "center": {
+        "x": 10.124772,
+        "y": 5.723000000000001
+      },
+      "width": 2.75,
+      "height": 0.5400000000000009,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_56",
+      "center": {
+        "x": 10.124772,
+        "y": 8.263000000000002
+      },
+      "width": 2.75,
+      "height": 0.5400000000000009,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_57",
+      "center": {
+        "x": 10.124772,
+        "y": 10.803
+      },
+      "width": 2.75,
+      "height": 0.5399999999999991,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_58",
+      "center": {
+        "x": 2.0147720000000002,
+        "y": 5.375
+      },
+      "width": 0.8399999999999999,
+      "height": 1.5199999999999996,
+      "layer": "top",
+      "availableZ": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_59",
+      "center": {
+        "x": 3.6885631738662035,
+        "y": -9.96420520580684
+      },
+      "width": 1.5,
+      "height": 0.5,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_60",
+      "center": {
+        "x": -2.4302279999999996,
+        "y": 5.7875
+      },
+      "width": 2.5,
+      "height": 0.8050000000000006,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_61",
+      "center": {
+        "x": 3.2847720000000002,
+        "y": 6.734999999999999
+      },
+      "width": 1.6999999999999997,
+      "height": 0.8399999999999999,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_62",
+      "center": {
+        "x": -8.567139177544973,
+        "y": -8.500436101920712
+      },
+      "width": 2.820492233509423,
+      "height": 0.615000000000002,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_63",
+      "center": {
+        "x": -5.111060530395131,
+        "y": -8.500436101920712
+      },
+      "width": 0.8916650607902632,
+      "height": 0.615000000000002,
+      "layer": "top",
+      "availableZ": [
+        0
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_64",
+      "center": {
+        "x": 3.6885631738662035,
+        "y": -9.96420520580684
+      },
+      "width": 1.5,
+      "height": 0.5,
+      "layer": "top",
+      "availableZ": [
+        1
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_65",
+      "center": {
+        "x": -7.321306647149842,
+        "y": -8.500436101920712
+      },
+      "width": 5.312157294299686,
+      "height": 0.615000000000002,
+      "layer": "top",
+      "availableZ": [
+        1
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_66",
+      "center": {
+        "x": 3.6885631738662035,
+        "y": -9.96420520580684
+      },
+      "width": 1.5,
+      "height": 0.5,
+      "layer": "top",
+      "availableZ": [
+        2
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_67",
+      "center": {
+        "x": -7.321306647149842,
+        "y": -8.500436101920712
+      },
+      "width": 5.312157294299686,
+      "height": 0.615000000000002,
+      "layer": "top",
+      "availableZ": [
+        2
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_68",
+      "center": {
+        "x": 3.6885631738662035,
+        "y": -9.96420520580684
+      },
+      "width": 1.5,
+      "height": 0.5,
+      "layer": "top",
+      "availableZ": [
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_69",
+      "center": {
+        "x": -7.321306647149842,
+        "y": -8.500436101920712
+      },
+      "width": 5.312157294299686,
+      "height": 0.615000000000002,
+      "layer": "top",
+      "availableZ": [
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_70",
+      "center": {
+        "x": 0.7447720000000004,
+        "y": 10.545
+      },
+      "width": 1.6999999999999997,
+      "height": 1.6999999999999993,
+      "layer": "top",
+      "availableZ": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_71",
+      "center": {
+        "x": 3.2847720000000002,
+        "y": 10.545
+      },
+      "width": 1.6999999999999997,
+      "height": 1.6999999999999993,
+      "layer": "top",
+      "availableZ": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_72",
+      "center": {
+        "x": 3.2847720000000002,
+        "y": 13.085
+      },
+      "width": 1.6999999999999997,
+      "height": 1.6999999999999993,
+      "layer": "top",
+      "availableZ": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_73",
+      "center": {
+        "x": -6.040227999999999,
+        "y": 4.453000000000001
+      },
+      "width": 2.75,
+      "height": 17.240000000000002,
+      "layer": "top",
+      "availableZ": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_74",
+      "center": {
+        "x": 10.124772,
+        "y": 4.453000000000001
+      },
+      "width": 2.75,
+      "height": 17.240000000000002,
+      "layer": "top",
+      "availableZ": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_75",
+      "center": {
+        "x": 0.32477200000000095,
+        "y": 13.617500000000001
+      },
+      "width": 0.8600000000000008,
+      "height": 2.7650000000000006,
+      "layer": "top",
+      "availableZ": [
+        1,
+        3
+      ]
+    },
+    {
+      "capacityMeshNodeId": "cmn_76",
+      "center": {
+        "x": 1.1747720000000008,
+        "y": 13.085
+      },
+      "width": 0.839999999999999,
+      "height": 1.6999999999999993,
+      "layer": "top",
+      "availableZ": [
+        1,
+        3
+      ]
+    }
+  ]
+}
