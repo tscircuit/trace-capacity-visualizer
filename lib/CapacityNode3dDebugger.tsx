@@ -8,9 +8,7 @@ type CapacityNode3dDebuggerProps = {
   simpleRouteJson?: SimpleRouteJson
   layerThickness?: number
   height?: number
-  defaultShowRoot?: boolean
   defaultShowObstacles?: boolean
-  defaultShowOutput?: boolean
   defaultWireframeOutput?: boolean
   style?: React.CSSProperties
 }
@@ -513,9 +511,7 @@ const ThreeBoardView: React.FC<{
     layerCount,
     layerThickness,
     height,
-    showRoot,
     showObstacles,
-    showOutput,
     wireframeOutput,
     zIndexByLayerName,
     meshOpacity,
@@ -546,18 +542,14 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
   simpleRouteJson,
   layerThickness = 1,
   height = 600,
-  defaultShowRoot = true,
   defaultShowObstacles = false, // don't show obstacles by default
-  defaultShowOutput = true,
   defaultWireframeOutput = false,
   style,
 }) => {
-  const [show3d, setShow3d] = useState(false)
+  const [show3d, setShow3d] = useState(true)
   const [rebuildKey, setRebuildKey] = useState(0)
 
-  const [showRoot, setShowRoot] = useState(defaultShowRoot)
   const [showObstacles, setShowObstacles] = useState(defaultShowObstacles)
-  const [showOutput, setShowOutput] = useState(defaultShowOutput)
   const [wireframeOutput, setWireframeOutput] = useState(defaultWireframeOutput)
 
   const [meshOpacity, setMeshOpacity] = useState(0.6)
@@ -565,7 +557,6 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
   const [boxShrinkAmount, setBoxShrinkAmount] = useState(0.1)
   const [showBorders, setShowBorders] = useState(true)
 
-  const toggle3d = useCallback(() => setShow3d((s) => !s), [])
   const rebuild = useCallback(() => setRebuildKey((k) => k + 1), [])
 
   return (
@@ -579,52 +570,6 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
             flexWrap: "wrap",
           }}
         >
-          <button
-            onClick={toggle3d}
-            style={{
-              padding: "8px 10px",
-              borderRadius: 6,
-              border: "1px solid #cbd5e1",
-              background: show3d ? "#1e293b" : "#2563eb",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            {show3d ? "Hide 3D" : "Show 3D"}
-          </button>
-          {show3d && (
-            <button
-              onClick={rebuild}
-              style={{
-                padding: "8px 10px",
-                borderRadius: 6,
-                border: "1px solid #cbd5e1",
-                background: "#0f766e",
-                color: "white",
-                cursor: "pointer",
-              }}
-              title="Rebuild 3D scene (use after changing solver params)"
-            >
-              Rebuild 3D
-            </button>
-          )}
-
-          {/* experiment-like toggles */}
-          <label
-            style={{
-              display: "inline-flex",
-              gap: 6,
-              alignItems: "center",
-              marginLeft: 8,
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={showRoot}
-              onChange={(e) => setShowRoot(e.target.checked)}
-            />
-            Root
-          </label>
           <label
             style={{ display: "inline-flex", gap: 6, alignItems: "center" }}
           >
@@ -634,16 +579,6 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
               onChange={(e) => setShowObstacles(e.target.checked)}
             />
             Obstacles
-          </label>
-          <label
-            style={{ display: "inline-flex", gap: 6, alignItems: "center" }}
-          >
-            <input
-              type="checkbox"
-              checked={showOutput}
-              onChange={(e) => setShowOutput(e.target.checked)}
-            />
-            Output
           </label>
           <label
             style={{ display: "inline-flex", gap: 6, alignItems: "center" }}
@@ -764,9 +699,9 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
             srj={simpleRouteJson}
             layerThickness={layerThickness}
             height={height}
-            showRoot={showRoot}
+            showRoot={true}
             showObstacles={showObstacles}
-            showOutput={showOutput}
+            showOutput={true}
             wireframeOutput={wireframeOutput}
             meshOpacity={meshOpacity}
             shrinkBoxes={shrinkBoxes}

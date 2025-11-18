@@ -131,38 +131,14 @@ export default function Example01() {
           Capacity Node 3D Debugger - Example 01
         </h1>
         
-        <div style={{ 
-          marginBottom: '20px', 
-          padding: '15px', 
-          backgroundColor: '#ecf0f1',
-          borderRadius: '6px',
-          borderLeft: '4px solid #3498db'
-        }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#2c3e50' }}>Dataset Information</h3>
-          <p style={{ margin: '5px 0', color: '#7f8c8d' }}>
-            <strong>Total Nodes:</strong> {nodes.length}
-          </p>
-          <p style={{ margin: '5px 0', color: '#7f8c8d' }}>
-            <strong>Layers:</strong> 4 (based on availableZ values)
-          </p>
-          <p style={{ margin: '5px 0', color: '#7f8c8d' }}>
-            <strong>Bounds:</strong> 
-            {simpleRouteJson ? 
-              ` X: ${simpleRouteJson.bounds.minX.toFixed(2)} to ${simpleRouteJson.bounds.maxX.toFixed(2)}, ` +
-              `Y: ${simpleRouteJson.bounds.minY.toFixed(2)} to ${simpleRouteJson.bounds.maxY.toFixed(2)}` 
-              : ' Calculating...'
-            }
-          </p>
-        </div>
+
 
         <CapacityNode3dDebugger
           nodes={nodes}
           simpleRouteJson={simpleRouteJson}
           layerThickness={1}
           height={600}
-          defaultShowRoot={true}
           defaultShowObstacles={false}
-          defaultShowOutput={true}
           defaultWireframeOutput={false}
           style={{
             backgroundColor: 'white',
@@ -172,21 +148,7 @@ export default function Example01() {
           }}
         />
         
-        <div style={{ 
-          marginTop: '20px', 
-          padding: '15px', 
-          backgroundColor: '#fff3cd',
-          borderRadius: '6px',
-          borderLeft: '4px solid #ffc107'
-        }}>
-          <h4 style={{ margin: '0 0 10px 0', color: '#856404' }}>Usage Instructions</h4>
-          <ul style={{ margin: '0', paddingLeft: '20px', color: '#856404' }}>
-            <li>Click "Show 3D" to render the 3D visualization</li>
-            <li>Use mouse to orbit, wheel to zoom, right-drag to pan</li>
-            <li>Toggle different layers and visualization options using the controls</li>
-            <li>Adjust opacity and box shrinking for better visualization</li>
-          </ul>
-        </div>
+
       </div>
     </div>
   )
