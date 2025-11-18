@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import type { CapacityMeshNode, SimpleRouteJson } from "./types"
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
@@ -10,6 +16,8 @@ type CapacityNode3dDebuggerProps = {
   height?: number
   defaultShowObstacles?: boolean
   defaultWireframeOutput?: boolean
+  defaultShowRoot?: boolean
+  defaultShowOutput?: boolean
   style?: React.CSSProperties
 }
 
@@ -60,12 +68,17 @@ function buildPrismsFromNodes(
   maxY: number
   z0: number
   z1: number
+  nodes: CapacityMeshNode[]
 }> {
   const xyKey = (n: CapacityMeshNode) =>
-    `${n.center.x.toFixed(8)}|${n.center.y.toFixed(8)}|${n.width.toFixed(8)}|${n.height.toFixed(8)}`
+    `${n.center.x.toFixed(8)}|${n.center.y.toFixed(8)}|${n.width.toFixed(
+      8,
+    )}|${n.height.toFixed(8)}`
   const azKey = (n: CapacityMeshNode) => {
     const zs = (
-      n.availableZ && n.availableZ.length ? Array.from(new Set(n.availableZ)) : [0]
+      n.availableZ && n.availableZ.length
+        ? Array.from(new Set(n.availableZ))
+        : [0]
     ).sort((a, b) => a - b)
     return `zset:${zs.join(",")}`
   }
@@ -73,20 +86,30 @@ function buildPrismsFromNodes(
 
   const groups = new Map<
     string,
-    { cx: number; cy: number; w: number; h: number; zs: number[] }
+    {
+      cx: number
+      cy: number
+      w: number
+      h: number
+      zs: number[]
+      nodes: CapacityMeshNode[]
+    }
   >()
   for (const n of nodes) {
     const k = key(n)
     const zlist = n.availableZ?.length ? n.availableZ : [0]
     const g = groups.get(k)
-    if (g) g.zs.push(...zlist)
-    else
+    if (g) {
+      g.zs.push(...zlist)
+      g.nodes.push(n)
+    } else
       groups.set(k, {
         cx: n.center.x,
         cy: n.center.y,
         w: n.width,
         h: n.height,
         zs: [...zlist],
+        nodes: [n],
       })
   }
 
@@ -97,6 +120,7 @@ function buildPrismsFromNodes(
     maxY: number
     z0: number
     z1: number
+    nodes: CapacityMeshNode[]
   }> = []
   for (const g of Array.from(groups.values())) {
     const minX = g.cx - g.w / 2
@@ -112,6 +136,7 @@ function buildPrismsFromNodes(
         maxY,
         z0: 0,
         z1: Math.max(1, fallbackLayerCount),
+        nodes: g.nodes,
       })
     } else {
       for (const r of runs) {
@@ -122,6 +147,7 @@ function buildPrismsFromNodes(
           maxY,
           z0: r[0]!,
           z1: r[r.length - 1]! + 1,
+          nodes: g.nodes,
         })
       }
     }
@@ -159,6 +185,7 @@ const ThreeBoardView: React.FC<{
   boxShrinkAmount: number
   showBorders: boolean
   isOrthographic: boolean
+  onDeleteNodes: (nodes: CapacityMeshNode[]) => void
 }> = ({
   nodes,
   srj,
@@ -173,9 +200,71 @@ const ThreeBoardView: React.FC<{
   boxShrinkAmount,
   showBorders,
   isOrthographic,
+  onDeleteNodes,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const destroyRef = useRef<() => void>(() => {})
+  const sceneRef = useRef<THREE.Scene | null>(null)
+  const cameraRef =
+    useRef<THREE.PerspectiveCamera | THREE.OrthographicCamera | null>(null)
+  const outputGroupRef = useRef<THREE.Group | null>(null)
+  const controlsStateRef =
+    useRef<{ position: THREE.Vector3; target: THREE.Vector3; zoom: number } | null>(
+      null,
+    )
+
+  const [contextMenu, setContextMenu] = useState<{
+    x: number
+    y: number
+    nodes: CapacityMeshNode[]
+  } | null>(null)
+
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setContextMenu(null) // Close any existing menu
+
+    const scene = sceneRef.current
+    const camera = cameraRef.current
+    const outputGroup = outputGroupRef.current
+    const el = containerRef.current
+    if (!el || !scene || !camera || !outputGroup) return
+
+    const rect = el.getBoundingClientRect()
+    const pointer = new THREE.Vector2()
+    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+    const raycaster = new THREE.Raycaster()
+    raycaster.setFromCamera(pointer, camera)
+    const intersects = raycaster.intersectObjects(outputGroup.children, true)
+
+    if (intersects.length > 0 && intersects[0]) {
+      let intersectedObject: THREE.Object3D | null = intersects[0].object
+      while (intersectedObject && !intersectedObject.userData.nodes) {
+        intersectedObject = intersectedObject.parent
+      }
+
+      if (intersectedObject && intersectedObject.userData.nodes) {
+        setContextMenu({
+          x: event.clientX,
+          y: event.clientY,
+          nodes: intersectedObject.userData.nodes,
+        })
+      }
+    }
+  }
+
+  const handleDelete = (nodesToDelete: CapacityMeshNode[]) => {
+    onDeleteNodes(nodesToDelete)
+    setContextMenu(null)
+  }
+
+  useEffect(() => {
+    const handleClick = () => setContextMenu(null)
+    window.addEventListener("click", handleClick)
+    return () => window.removeEventListener("click", handleClick)
+  }, [])
 
   const layerNames = useMemo(() => {
     // Build from nodes (preferred, matches solver) and fall back to SRJ obstacle names
@@ -224,6 +313,7 @@ const ThreeBoardView: React.FC<{
       el.appendChild(renderer.domElement)
 
       const scene = new THREE.Scene()
+      sceneRef.current = scene
       scene.background = new THREE.Color(0xf7f8fa)
 
       const fitBox = srj
@@ -279,6 +369,7 @@ const ThreeBoardView: React.FC<{
       } else {
         camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 10000)
       }
+      cameraRef.current = camera
 
       const controls = new OrbitControls(camera, renderer.domElement)
       controls.enableDamping = true
@@ -292,6 +383,7 @@ const ThreeBoardView: React.FC<{
       const rootGroup = new THREE.Group()
       const obstaclesGroup = new THREE.Group()
       const outputGroup = new THREE.Group()
+      outputGroupRef.current = outputGroup
       scene.add(rootGroup, obstaclesGroup, outputGroup)
 
       // Axes helper for orientation (similar to experiment)
@@ -336,6 +428,7 @@ const ThreeBoardView: React.FC<{
         },
         color: number,
         wire: boolean,
+        nodes: CapacityMeshNode[],
         opacity = 0.45,
         borders = false,
       ) {
@@ -355,6 +448,7 @@ const ThreeBoardView: React.FC<{
             new THREE.LineBasicMaterial({ color }),
           )
           line.position.set(cx, cy, cz)
+          line.userData = { nodes }
           return line
         }
         const clampedOpacity = clamp01(opacity)
@@ -368,6 +462,7 @@ const ThreeBoardView: React.FC<{
 
         const mesh = new THREE.Mesh(geom, mat)
         mesh.position.set(cx, cy, cz)
+        mesh.userData = { nodes }
 
         if (!borders) return mesh
 
@@ -382,6 +477,7 @@ const ThreeBoardView: React.FC<{
         const group = new THREE.Group()
         group.add(mesh)
         group.add(line)
+        group.userData = { nodes }
         return group
       }
 
@@ -395,7 +491,7 @@ const ThreeBoardView: React.FC<{
           z0: 0,
           z1: layerCount,
         }
-        rootGroup.add(makeBoxMesh(rootBox, colorRoot, true, 1))
+        rootGroup.add(makeBoxMesh(rootBox, colorRoot, true, []))
       }
 
       // Obstacles — rectangular only — one slab per declared layer
@@ -422,6 +518,7 @@ const ThreeBoardView: React.FC<{
                 { minX, maxX, minY, maxY, z0: z, z1: z + 1 },
                 colorOb,
                 false,
+                [],
                 0.35,
                 false,
               ),
@@ -467,6 +564,7 @@ const ThreeBoardView: React.FC<{
               box,
               color,
               wireframeOutput,
+              p.nodes,
               meshOpacity,
               showBorders && !wireframeOutput,
             ),
@@ -474,32 +572,43 @@ const ThreeBoardView: React.FC<{
         }
       }
 
-      // Fit camera
-      const target = new THREE.Vector3(
-        -((fitBox.minX + fitBox.maxX) / 2), // negate X to account for flipped axis
-        -dy / 2, // center of the inverted Y range
-        (fitBox.minY + fitBox.maxY) / 2,
-      )
-      controls.target.copy(target)
-
-      const dist = size * 2.0
-      if (isOrthographic) {
-        // Top-down view
-        camera.position.copy(target).add(new THREE.Vector3(0, dist, 0))
-        camera.lookAt(target)
+      if (controlsStateRef.current) {
+        camera.position.copy(controlsStateRef.current.position)
+        controls.target.copy(controlsStateRef.current.target)
+        if (isOrthographic) {
+          ;(camera as THREE.OrthographicCamera).zoom =
+            controlsStateRef.current.zoom
+        }
+        camera.updateProjectionMatrix()
+        controls.update()
       } else {
-        // Camera looks from above-right-front, with negative Y being "up" (z=0 at top)
-        camera.position.set(
-          -(fitBox.maxX + dist * 0.6), // negate X to account for flipped axis
-          -dy / 2 + dist, // negative Y is up, so position above the center
-          fitBox.maxY + dist * 0.6,
+        // Fit camera
+        const target = new THREE.Vector3(
+          -((fitBox.minX + fitBox.maxX) / 2), // negate X to account for flipped axis
+          -dy / 2, // center of the inverted Y range
+          (fitBox.minY + fitBox.maxY) / 2,
         )
-      }
+        controls.target.copy(target)
 
-      camera.near = Math.max(0.1, size / 100)
-      camera.far = dist * 10 + size * 10
-      camera.updateProjectionMatrix()
-      controls.update()
+        const dist = size * 2.0
+        if (isOrthographic) {
+          // Top-down view
+          camera.position.copy(target).add(new THREE.Vector3(0, dist, 0))
+          camera.lookAt(target)
+        } else {
+          // Camera looks from above-right-front, with negative Y being "up" (z=0 at top)
+          camera.position.set(
+            -(fitBox.maxX + dist * 0.6), // negate X to account for flipped axis
+            -dy / 2 + dist, // negative Y is up, so position above the center
+            fitBox.maxY + dist * 0.6,
+          )
+        }
+
+        camera.near = Math.max(0.1, size / 100)
+        camera.far = dist * 10 + size * 10
+        camera.updateProjectionMatrix()
+        controls.update()
+      }
 
       const onResize = () => {
         const W = el.clientWidth || w
@@ -529,10 +638,18 @@ const ThreeBoardView: React.FC<{
       animate()
 
       destroyRef.current = () => {
+        controlsStateRef.current = {
+          position: camera.position.clone(),
+          target: controls.target.clone(),
+          zoom: (camera as any).zoom ?? 1,
+        }
         cancelAnimationFrame(raf)
         window.removeEventListener("resize", onResize)
         renderer.dispose()
         el.innerHTML = ""
+        sceneRef.current = null
+        cameraRef.current = null
+        outputGroupRef.current = null
       }
     })()
 
@@ -557,31 +674,71 @@ const ThreeBoardView: React.FC<{
   ])
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        width: "100%",
-        height,
-        border: "1px solid #e5e7eb",
-        borderRadius: 8,
-        overflow: "hidden",
-        background: "#f7f8fa",
-      }}
-    />
+    <>
+      {contextMenu && (
+        <div
+          style={{
+            position: "fixed",
+            top: contextMenu.y,
+            left: contextMenu.x,
+            background: "white",
+            border: "1px solid #ccc",
+            borderRadius: 4,
+            padding: 8,
+            zIndex: 1000,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+          }}
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+        >
+          <button
+            onClick={() => handleDelete(contextMenu.nodes)}
+            style={{
+              background: "none",
+              border: "none",
+              padding: "4px 8px",
+              cursor: "pointer",
+              width: "100%",
+              textAlign: "left",
+            }}
+          >
+            Hide
+          </button>
+        </div>
+      )}
+      <div
+        ref={containerRef}
+        onContextMenu={handleContextMenu}
+        style={{
+          width: "100%",
+          height,
+          border: "1px solid #e5e7eb",
+          borderRadius: 8,
+          overflow: "hidden",
+          background: "#f7f8fa",
+        }}
+      />
+    </>
   )
 }
 
 /* ----------------------- Public wrapper component ----------------------- */
 
 export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
-  nodes,
+  nodes: initialNodes,
   simpleRouteJson,
   layerThickness = 1,
   height = 600,
   defaultShowObstacles = false, // don't show obstacles by default
   defaultWireframeOutput = false,
+  defaultShowRoot = false,
+  defaultShowOutput = true,
   style,
 }) => {
+  const [nodes, setNodes] = useState(initialNodes)
+  useEffect(() => {
+    setNodes(initialNodes)
+  }, [initialNodes])
+
   const [show3d, setShow3d] = useState(true)
   const [rebuildKey, setRebuildKey] = useState(0)
 
@@ -595,6 +752,17 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
   const [showBorders, setShowBorders] = useState(true)
 
   const rebuild = useCallback(() => setRebuildKey((k) => k + 1), [])
+
+  const handleDeleteNodes = useCallback((nodesToDelete: CapacityMeshNode[]) => {
+    const nodesToDeleteSet = new Set(nodesToDelete)
+    setNodes((currentNodes) =>
+      currentNodes.filter((n) => !nodesToDeleteSet.has(n)),
+    )
+  }, [])
+
+  const handleReset = () => {
+    setNodes(initialNodes)
+  }
 
   return (
     <>
@@ -734,6 +902,22 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
             </label>
           )}
 
+          {nodes.length !== initialNodes.length && (
+            <button
+              onClick={handleReset}
+              style={{
+                background: "#f1f5f9",
+                border: "1px solid #cbd5e1",
+                borderRadius: 4,
+                padding: "2px 8px",
+                fontSize: 12,
+                cursor: "pointer",
+              }}
+            >
+              Unhide
+            </button>
+          )}
+
           <div style={{ fontSize: 12, color: "#334155", marginLeft: 6 }}>
             Drag to orbit · Wheel to zoom · Right-drag to pan
           </div>
@@ -746,15 +930,16 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
             srj={simpleRouteJson}
             layerThickness={layerThickness}
             height={height}
-            showRoot={true}
+            showRoot={defaultShowRoot}
             showObstacles={showObstacles}
-            showOutput={true}
+            showOutput={defaultShowOutput}
             wireframeOutput={wireframeOutput}
             meshOpacity={meshOpacity}
             shrinkBoxes={shrinkBoxes}
             boxShrinkAmount={boxShrinkAmount}
             showBorders={showBorders}
             isOrthographic={isOrthographic}
+            onDeleteNodes={handleDeleteNodes}
           />
         )}
       </div>
