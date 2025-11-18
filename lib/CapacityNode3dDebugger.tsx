@@ -158,6 +158,7 @@ const ThreeBoardView: React.FC<{
   shrinkBoxes: boolean
   boxShrinkAmount: number
   showBorders: boolean
+  isOrthographic: boolean
 }> = ({
   nodes,
   srj,
@@ -171,6 +172,7 @@ const ThreeBoardView: React.FC<{
   shrinkBoxes,
   boxShrinkAmount,
   showBorders,
+  isOrthographic,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const destroyRef = useRef<() => void>(() => {})
@@ -224,8 +226,59 @@ const ThreeBoardView: React.FC<{
       const scene = new THREE.Scene()
       scene.background = new THREE.Color(0xf7f8fa)
 
-      const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 10000)
-      camera.position.set(80, 80, 120)
+      const fitBox = srj
+        ? {
+            minX: srj.bounds.minX,
+            maxX: srj.bounds.maxX,
+            minY: srj.bounds.minY,
+            maxY: srj.bounds.maxY,
+            z0: 0,
+            z1: layerCount,
+          }
+        : (() => {
+            if (prisms.length === 0) {
+              return {
+                minX: -10,
+                maxX: 10,
+                minY: -10,
+                maxY: 10,
+                z0: 0,
+                z1: layerCount,
+              }
+            }
+            let minX = Infinity,
+              minY = Infinity,
+              maxX = -Infinity,
+              maxY = -Infinity
+            for (const p of prisms) {
+              minX = Math.min(minX, p.minX)
+              maxX = Math.max(maxX, p.maxX)
+              minY = Math.min(minY, p.minY)
+              maxY = Math.max(maxY, p.maxY)
+            }
+            return { minX, maxX, minY, maxY, z0: 0, z1: layerCount }
+          })()
+
+      const dx = fitBox.maxX - fitBox.minX
+      const dz = fitBox.maxY - fitBox.minY
+      const dy = (fitBox.z1 - fitBox.z0) * layerThickness
+      const size = Math.max(dx, dz, dy)
+
+      let camera: THREE.PerspectiveCamera | THREE.OrthographicCamera
+      if (isOrthographic) {
+        const aspect = w / h
+        const frustumSize = size * 1.2
+        camera = new THREE.OrthographicCamera(
+          (frustumSize * aspect) / -2,
+          (frustumSize * aspect) / 2,
+          frustumSize / 2,
+          frustumSize / -2,
+          0.1,
+          size * 20,
+        )
+      } else {
+        camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 10000)
+      }
 
       const controls = new OrbitControls(camera, renderer.domElement)
       controls.enableDamping = true
@@ -422,64 +475,46 @@ const ThreeBoardView: React.FC<{
       }
 
       // Fit camera
-      const fitBox = srj
-        ? {
-            minX: srj.bounds.minX,
-            maxX: srj.bounds.maxX,
-            minY: srj.bounds.minY,
-            maxY: srj.bounds.maxY,
-            z0: 0,
-            z1: layerCount,
-          }
-        : (() => {
-            if (prisms.length === 0) {
-              return {
-                minX: -10,
-                maxX: 10,
-                minY: -10,
-                maxY: 10,
-                z0: 0,
-                z1: layerCount,
-              }
-            }
-            let minX = Infinity,
-              minY = Infinity,
-              maxX = -Infinity,
-              maxY = -Infinity
-            for (const p of prisms) {
-              minX = Math.min(minX, p.minX)
-              maxX = Math.max(maxX, p.maxX)
-              minY = Math.min(minY, p.minY)
-              maxY = Math.max(maxY, p.maxY)
-            }
-            return { minX, maxX, minY, maxY, z0: 0, z1: layerCount }
-          })()
-
-      const dx = fitBox.maxX - fitBox.minX
-      const dz = fitBox.maxY - fitBox.minY
-      const dy = (fitBox.z1 - fitBox.z0) * layerThickness
-      const size = Math.max(dx, dz, dy)
-      const dist = size * 2.0
-      // Camera looks from above-right-front, with negative Y being "up" (z=0 at top)
-      camera.position.set(
-        -(fitBox.maxX + dist * 0.6), // negate X to account for flipped axis
-        -dy / 2 + dist, // negative Y is up, so position above the center
-        fitBox.maxY + dist * 0.6,
-      )
-      camera.near = Math.max(0.1, size / 100)
-      camera.far = dist * 10 + size * 10
-      camera.updateProjectionMatrix()
-      controls.target.set(
+      const target = new THREE.Vector3(
         -((fitBox.minX + fitBox.maxX) / 2), // negate X to account for flipped axis
         -dy / 2, // center of the inverted Y range
         (fitBox.minY + fitBox.maxY) / 2,
       )
+      controls.target.copy(target)
+
+      const dist = size * 2.0
+      if (isOrthographic) {
+        // Top-down view
+        camera.position.copy(target).add(new THREE.Vector3(0, dist, 0))
+        camera.lookAt(target)
+      } else {
+        // Camera looks from above-right-front, with negative Y being "up" (z=0 at top)
+        camera.position.set(
+          -(fitBox.maxX + dist * 0.6), // negate X to account for flipped axis
+          -dy / 2 + dist, // negative Y is up, so position above the center
+          fitBox.maxY + dist * 0.6,
+        )
+      }
+
+      camera.near = Math.max(0.1, size / 100)
+      camera.far = dist * 10 + size * 10
+      camera.updateProjectionMatrix()
       controls.update()
 
       const onResize = () => {
         const W = el.clientWidth || w
         const H = el.clientHeight || h
-        camera.aspect = W / H
+        if (isOrthographic) {
+          const aspect = W / H
+          const frustumSize = size * 1.2
+          const ocam = camera as THREE.OrthographicCamera
+          ocam.left = (frustumSize * aspect) / -2
+          ocam.right = (frustumSize * aspect) / 2
+          ocam.top = frustumSize / 2
+          ocam.bottom = frustumSize / -2
+        } else {
+          ;(camera as THREE.PerspectiveCamera).aspect = W / H
+        }
         camera.updateProjectionMatrix()
         renderer.setSize(W, H)
       }
@@ -518,6 +553,7 @@ const ThreeBoardView: React.FC<{
     shrinkBoxes,
     boxShrinkAmount,
     showBorders,
+    isOrthographic,
   ])
 
   return (
@@ -551,6 +587,7 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
 
   const [showObstacles, setShowObstacles] = useState(defaultShowObstacles)
   const [wireframeOutput, setWireframeOutput] = useState(defaultWireframeOutput)
+  const [isOrthographic, setIsOrthographic] = useState(false)
 
   const [meshOpacity, setMeshOpacity] = useState(0.6)
   const [shrinkBoxes, setShrinkBoxes] = useState(true)
@@ -589,6 +626,16 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
               onChange={(e) => setWireframeOutput(e.target.checked)}
             />
             Wireframe Output
+          </label>
+          <label
+            style={{ display: "inline-flex", gap: 6, alignItems: "center" }}
+          >
+            <input
+              type="checkbox"
+              checked={isOrthographic}
+              onChange={(e) => setIsOrthographic(e.target.checked)}
+            />
+            Orthographic
           </label>
 
           {/* Mesh opacity slider */}
@@ -707,6 +754,7 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
             shrinkBoxes={shrinkBoxes}
             boxShrinkAmount={boxShrinkAmount}
             showBorders={showBorders}
+            isOrthographic={isOrthographic}
           />
         )}
       </div>
