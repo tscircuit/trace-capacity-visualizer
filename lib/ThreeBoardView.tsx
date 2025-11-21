@@ -6,6 +6,7 @@ import { canonicalizeLayerOrder } from "../utils/canonicalizeLayerOrder"
 import { buildPrismsFromNodes } from "../utils/buildPrismsFromNodes"
 import { clamp01 } from "../utils/clamp01"
 import { darkenColor } from "../utils/darkenColor"
+import { createColorAssigner } from "../utils/layerPalette"
 
 export const ThreeBoardView: React.FC<{
   nodes: CapacityMeshNode[]
@@ -229,29 +230,9 @@ export const ThreeBoardView: React.FC<{
       const colorRoot = 0x111827
       const colorOb = 0xef4444
 
-      // Palette for layer-span-based coloring
-      const spanPalette = [
-        0x0ea5e9, // cyan-ish
-        0x22c55e, // green
-        0xf97316, // orange
-        0xa855f7, // purple
-        0xfacc15, // yellow
-        0x38bdf8, // light blue
-        0xec4899, // pink
-        0x14b8a6, // teal
-      ]
-      const spanColorMap = new Map<string, number>()
-      let spanColorIndex = 0
-      const getSpanColor = (z0: number, z1: number) => {
-        const key = `${z0}-${z1}`
-        let c = spanColorMap.get(key)
-        if (c == null) {
-          c = spanPalette[spanColorIndex % spanPalette.length]!
-          spanColorMap.set(key, c)
-          spanColorIndex++
-        }
-        return c
-      }
+      // Use shared color assigner logic
+      const assigner = createColorAssigner()
+      const getSpanColor = (z0: number, z1: number) => assigner(`${z0}-${z1}`)
 
       function makeBoxMesh(
         b: {

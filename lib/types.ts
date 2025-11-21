@@ -69,3 +69,29 @@ export interface SimpleRouteConnection {
   }>
   externallyConnectedPointIds?: string[][]
 }
+
+export interface PathingInputNode {
+  capacityMeshNodeId: string
+  center: { x: number; y: number }
+  layer: string
+}
+
+export interface PathingInputConnection {
+  connection: {
+    name: string
+    pointsToConnect: Array<{
+      x: number
+      y: number
+      layer: string
+      pointId?: string
+    }>
+  }
+  pathFound: boolean
+  path: PathingInputNode[]
+}
+
+export interface PathingOptimizerResult {
+  initialPathingSolver: {
+    connectionsWithNodes: PathingInputConnection[]
+  }
+}
