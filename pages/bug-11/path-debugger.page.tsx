@@ -4,8 +4,8 @@ import pathingOptimizerInput from "../../test-assets/bug-11/pathingOptimizer_inp
 
 export default function PathDebuggerPage() {
   // The JSON file is an array, so we get the first element
-  const data = (initialPathingSolver as any)[0]
-  const { nodes, edges } = data
+  const pathingSolverResult = (initialPathingSolver as any)[0]
+  const { nodes, edges } = pathingSolverResult
   const precalculatedPaths = pathingOptimizerInput[0]?.initialPathingSolver.connectionsWithNodes
 
   if (!nodes || !edges) {
@@ -14,7 +14,7 @@ export default function PathDebuggerPage() {
         <h1 style={{ color: "#dc2626" }}>Error Loading Data</h1>
         <p>Could not load nodes and edges from initial_pathing_solver.json</p>
         <pre style={{ background: "#f3f4f6", padding: 10, borderRadius: 4 }}>
-          Data structure: {JSON.stringify({ hasNodes: !!nodes, hasEdges: !!edges, dataKeys: Object.keys(data || {}) }, null, 2)}
+          Data structure: {JSON.stringify({ hasNodes: !!nodes, hasEdges: !!edges, dataKeys: Object.keys(pathingSolverResult || {}) }, null, 2)}
         </pre>
       </div>
     )

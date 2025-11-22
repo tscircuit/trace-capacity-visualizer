@@ -3,14 +3,14 @@ import type { CapacityMeshNode, CapacityMeshEdge } from "../../lib/types"
 import bug11Data from "../../test-assets/bug-11/initial_pathing_solver.json"
 
 export default function Bug11GraphVisualizer() {
-  const data = bug11Data[0]
+  const capacityMeshResult = bug11Data[0]
 
-  if (!data) {
-    return <div>No data found</div>
+  if (!capacityMeshResult) {
+    return <div>No capacity mesh data found</div>
   }
 
-  const nodes = (data.nodes || []) as CapacityMeshNode[]
-  const edges = (data.edges || []) as CapacityMeshEdge[]
+  const nodes = (capacityMeshResult.nodes || []) as CapacityMeshNode[]
+  const edges = (capacityMeshResult.edges || []) as CapacityMeshEdge[]
 
   return (
     <div

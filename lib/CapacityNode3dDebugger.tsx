@@ -161,9 +161,9 @@ export const CapacityNode3dDebugger: React.FC<CapacityNode3dDebuggerProps> = ({
                     step={0.05}
                     style={{ width: 60 }}
                     onChange={(e) => {
-                      const v = parseFloat(e.target.value)
-                      if (Number.isNaN(v)) return
-                      setBoxShrinkAmount(Math.max(0, v))
+                      const shrinkAmount = parseFloat(e.target.value)
+                      if (Number.isNaN(shrinkAmount)) return
+                      setBoxShrinkAmount(Math.max(0, shrinkAmount))
                     }}
                   />
                 </label>

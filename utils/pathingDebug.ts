@@ -10,10 +10,10 @@ export async function loadPathingData(): Promise<PathingOptimizerResult> {
     // Import the JSON file directly
     const pathingData = await import("../test-assets/bug-11/pathingOptimizer_input.json")
     // The file is an array with one object containing initialPathingSolver
-    const data = (pathingData.default || pathingData) as any
-    return data[0] as PathingOptimizerResult
+    const pathingOptimizerResults = (pathingData.default || pathingData) as any
+    return pathingOptimizerResults[0] as PathingOptimizerResult
   } catch (error) {
-    console.error("Error loading pathing data:", error)
+    console.error("Error loading pathing optimizer results:", error)
     throw error
   }
 }
@@ -22,11 +22,15 @@ export async function loadPathingData(): Promise<PathingOptimizerResult> {
  * Match JSON path nodes to scene nodes by position
  * Returns a map from JSON node to scene node ID
  */
-export function matchNodesByPosition(
-  sceneNodes: CapacityMeshNode[],
-  jsonNodes: Array<{ center: { x: number; y: number }; layer: string }>,
-  tolerance: number = 0.001
-): Map<any, string> {
+export function matchNodesByPosition({
+  sceneNodes,
+  jsonNodes,
+  tolerance = 0.001
+}: {
+  sceneNodes: CapacityMeshNode[]
+  jsonNodes: Array<{ center: { x: number; y: number }; layer: string }>
+  tolerance?: number
+}): Map<any, string> {
   const matches = new Map<any, string>()
   
   for (const jsonNode of jsonNodes) {
