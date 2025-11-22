@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/react": "^19.2.6",
     "@types/three": "^0.170.0",
     "biome": "^0.3.3",
     "react": "^19.2.0",
