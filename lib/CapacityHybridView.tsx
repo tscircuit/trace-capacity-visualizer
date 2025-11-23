@@ -158,7 +158,7 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
       const dz = p.maxY - p.minY
       const dy = (p.z1 - p.z0) * layerThickness
 
-      const cx = -((p.minX + p.maxX) / 2)
+      const cx = (p.minX + p.maxX) / 2
       const cz = (p.minY + p.maxY) / 2
       const avgLayerIdx = (p.z0 + p.z1) / 2
       const cy = -(avgLayerIdx * layerThickness + avgLayerIdx * layerGap)
@@ -205,7 +205,7 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
       }
 
       const layerIdx = getLayerIndex(node)
-      const px = -node.center.x 
+      const px = node.center.x 
       const pz = node.center.y  
       const py = getLayerYPosition(layerIdx) 
 
@@ -334,7 +334,7 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
         const idx = layerOrder.indexOf(layer)
         const layerIdx = idx >= 0 ? idx : 0
         return new THREE.Vector3(
-            -x,
+            x,
             getLayerYPosition(layerIdx),
             y
         )
