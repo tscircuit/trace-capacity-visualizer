@@ -140,13 +140,20 @@ const Page = () => {
           <span>Status: <strong>{status}</strong></span>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <label>Layer: {layerIndex}</label>
+            <label>Layer:</label>
             <input 
-              type="range" 
+              type="number" 
               min="0" 
               max={maxLayer} 
+              step="1"
               value={layerIndex} 
-              onChange={(e) => setLayerIndex(Number(e.target.value))} 
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                if (!isNaN(val) && val >= 0 && val <= maxLayer) {
+                  setLayerIndex(val);
+                }
+              }}
+              style={{ width: '60px', padding: '4px' }}
             />
           </div>
         </div>
