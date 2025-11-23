@@ -45,6 +45,7 @@ const Page = () => {
 
         // 2. Create 3D Texture
         const texture = device.createTexture({
+          dimension: '3d',
           size: [ctx.widthCells, ctx.heightCells, ctx.layerCount || 1],
           format: 'r8uint',
           usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,

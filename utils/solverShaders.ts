@@ -22,7 +22,7 @@ fn main(@builtin(vertex_index) VertexIndex : u32) -> VertexOutput {
 
 export const FS_CODE = `
 @group(0) @binding(0) var gridTexture : texture_3d<u32>;
-@group(0) @binding(1) var uniformParams : UniformParams;
+@group(0) @binding(1) var<uniform> uniformParams : UniformParams;
 
 struct UniformParams {
   layerIndex : u32,
