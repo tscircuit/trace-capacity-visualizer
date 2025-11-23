@@ -254,7 +254,7 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
       const center = new THREE.Vector3((minX + maxX)/2, (minY + maxY)/2, (minZ + maxZ)/2)
       const dist = Math.max(maxX - minX, maxZ - minZ) * 1.5 + 10
       controls.target.copy(center)
-      camera.position.set(center.x + dist, center.y + dist, center.z + dist)
+      camera.position.set(center.x, center.y + dist, center.z + dist)
       camera.lookAt(center)
       controls.update()
     }

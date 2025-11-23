@@ -192,7 +192,7 @@ export const CapacityGraph3d: React.FC<CapacityGraph3dProps> = ({
       const dist = span * 1.5 + 10
 
       controls.target.copy(center)
-      camera.position.set(center.x + dist / 2, center.y + dist / 2, center.z + dist)
+      camera.position.set(center.x, center.y + dist, center.z + dist)
       camera.lookAt(center)
       controls.update()
     }
