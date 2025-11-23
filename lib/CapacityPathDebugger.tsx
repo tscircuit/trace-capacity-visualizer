@@ -28,30 +28,38 @@ export const CapacityPathDebugger: React.FC<CapacityPathDebuggerProps> = ({
   const [enablePaths, setEnablePaths] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
+  // Generate connection options for dropdown, sorted by path length
+  const connectionOptions = useMemo(() => {
+    if (!precalculatedPaths) return []
+    
+    return precalculatedPaths
+      .map((conn, index) => ({
+        value: index,
+        originalIndex: index,
+        label: `${getConnectionDisplayName(conn, index)} (${conn.path.length} nodes)`,
+        pathLength: conn.path.length
+      }))
+      .sort((a, b) => a.pathLength - b.pathLength)
+      .map((option, sortedIndex) => ({
+        ...option,
+        value: sortedIndex // Use sorted index as the value
+      }))
+  }, [precalculatedPaths])
+
   // Convert selected connection to debug path data
   const debugPath: DebugPathData | null = useMemo(() => {
     if (!enablePaths || !precalculatedPaths || !precalculatedPaths.length) {
       return null
     }
 
-    if (selectedIndex >= precalculatedPaths.length) {
-      return null
-    }
+    // Find the selected connection option and get its original index
+    const selectedOption = connectionOptions[selectedIndex]
+    if (!selectedOption) return null
 
-    const connection = precalculatedPaths[selectedIndex]
+    const connection = precalculatedPaths[selectedOption.originalIndex]
     if (!connection) return null
     return convertConnectionToDebugPath(connection)
-  }, [enablePaths, precalculatedPaths, selectedIndex])
-
-  // Generate connection options for dropdown
-  const connectionOptions = useMemo(() => {
-    if (!precalculatedPaths) return []
-    
-    return precalculatedPaths.map((conn, index) => ({
-      value: index,
-      label: getConnectionDisplayName(conn, index)
-    }))
-  }, [precalculatedPaths])
+  }, [enablePaths, precalculatedPaths, selectedIndex, connectionOptions])
 
   return (
     <div style={{ position: 'relative', ...style }}>
