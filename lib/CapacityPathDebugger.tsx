@@ -5,12 +5,14 @@ import {
   convertConnectionToDebugPath, 
   getConnectionDisplayName 
 } from "../utils/pathingDebug"
+import { LAYER_PALETTE } from "../utils/layerPalette"
 
 type CapacityPathDebuggerProps = {
   nodes: CapacityMeshNode[]
   edges: CapacityMeshEdge[]
   height?: number
   layerThickness?: number
+  layerGap?: number
   nodeSize?: number
   style?: React.CSSProperties
   precalculatedPaths?: PathingInputConnection[]
@@ -21,12 +23,20 @@ export const CapacityPathDebugger: React.FC<CapacityPathDebuggerProps> = ({
   edges,
   height = 600,
   layerThickness = 1,
+  layerGap = 0,
   nodeSize = 0.3,
   style,
   precalculatedPaths,
 }) => {
   const [enablePaths, setEnablePaths] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [currentLayerGap, setCurrentLayerGap] = useState(layerGap)
+  const [visibleLayers, setVisibleLayers] = useState<string[] | null>(null)
+
+  // Get available layers from nodes
+  const availableLayers = useMemo(() => {
+    return [...new Set(nodes.map(node => node.layer))].sort()
+  }, [nodes])
 
   // Generate connection options for dropdown, sorted by path length
   const connectionOptions = useMemo(() => {
@@ -68,9 +78,11 @@ export const CapacityPathDebugger: React.FC<CapacityPathDebuggerProps> = ({
         edges={edges}
         height={height}
         layerThickness={layerThickness}
+        layerGap={currentLayerGap}
         nodeSize={nodeSize}
         debugPath={debugPath}
         style={style}
+        visibleLayers={visibleLayers || undefined}
       />
       
       {/* Path Debug Controls */}
@@ -91,6 +103,118 @@ export const CapacityPathDebugger: React.FC<CapacityPathDebuggerProps> = ({
         minWidth: 200
       }}>
         <strong style={{ marginBottom: 4 }}>Path Debugger</strong>
+
+        {/* Layer Gap Control */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <label style={{ fontSize: 11, fontWeight: 'bold' }}>
+            Layer Gap: {currentLayerGap.toFixed(1)}
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            step="0.1"
+            value={currentLayerGap}
+            onChange={(e) => setCurrentLayerGap(parseFloat(e.target.value))}
+            style={{ width: '100%' }}
+          />
+        </div>
+
+        {/* Layer Visibility Controls */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <label style={{ fontSize: 11, fontWeight: 'bold' }}>
+            Visible Layers:
+          </label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {/* All Layers Toggle */}
+            <label style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 6,
+              fontSize: 10,
+              cursor: 'pointer',
+              padding: '2px 0'
+            }}>
+              <input
+                type="checkbox"
+                checked={visibleLayers === null}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setVisibleLayers(null)
+                  } else {
+                    setVisibleLayers([])
+                  }
+                }}
+                style={{ margin: 0 }}
+              />
+              <div style={{
+                width: 12,
+                height: 12,
+                background: 'linear-gradient(90deg, #0ea5e9 0%, #22c55e 25%, #f97316 50%, #a855f7 75%, #facc15 100%)',
+                borderRadius: 2,
+                border: '1px solid #d1d5db'
+              }} />
+              <span>All Layers</span>
+            </label>
+
+            {/* Individual Layer Toggles */}
+            {availableLayers.map((layer, index) => {
+              const isVisible = visibleLayers === null || (visibleLayers && visibleLayers.includes(layer))
+              const layerColor = LAYER_PALETTE[index % LAYER_PALETTE.length] || 0x808080
+              
+              return (
+                <label key={layer} style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 6,
+                  fontSize: 10,
+                  cursor: 'pointer',
+                  padding: '2px 0',
+                  opacity: visibleLayers === null ? 0.7 : 1
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={isVisible}
+                    onChange={(e) => {
+                      if (visibleLayers === null) {
+                        // If showing all layers, create array with all except this one if unchecking
+                        if (!e.target.checked) {
+                          setVisibleLayers(availableLayers.filter(l => l !== layer))
+                        }
+                      } else {
+                        // If selective mode, add/remove this layer
+                        if (e.target.checked) {
+                          const newLayers = [...(visibleLayers || []), layer]
+                          // If all layers are now selected, switch to "all" mode
+                          if (newLayers.length === availableLayers.length) {
+                            setVisibleLayers(null)
+                          } else {
+                            setVisibleLayers(newLayers)
+                          }
+                        } else {
+                          setVisibleLayers((visibleLayers || []).filter(l => l !== layer))
+                        }
+                      }
+                    }}
+                    disabled={visibleLayers === null}
+                    style={{ margin: 0 }}
+                  />
+                  <div style={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: `#${layerColor.toString(16).padStart(6, '0')}`,
+                    borderRadius: 2,
+                    border: '1px solid #d1d5db'
+                  }} />
+                  <span style={{ textTransform: 'capitalize' }}>{layer}</span>
+                  {visibleLayers && !visibleLayers.includes(layer) && visibleLayers !== null && (
+                    <span style={{ color: '#9ca3af' }}>(hidden)</span>
+                  )}
+                </label>
+              )
+            })}
+          </div>
+        </div>
         
         <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <input

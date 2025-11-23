@@ -19,9 +19,11 @@ type CapacityHybridViewProps = {
   edges: CapacityMeshEdge[]
   height?: number
   layerThickness?: number
+  layerGap?: number
   nodeSize?: number
   debugPath?: DebugPathData | null
   style?: React.CSSProperties
+  visibleLayers?: string[]
 }
 
 
@@ -31,9 +33,11 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
   edges,
   height = 600,
   layerThickness = 1,
+  layerGap = 0,
   nodeSize = 0.3,
   debugPath,
   style,
+  visibleLayers,
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null)
   const destroyRef = useRef<() => void>(() => {})
@@ -82,6 +86,11 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
     if (node.availableZ && node.availableZ.length > 0) return Math.min(...node.availableZ)
     const idx = layerOrder.indexOf(node.layer)
     return idx >= 0 ? idx : 0
+  }
+
+  // Helper function to calculate Y position with layer gap
+  const getLayerYPosition = (layerIdx: number) => {
+    return -(layerIdx + 0.5) * layerThickness - layerIdx * layerGap
   }
 
   // 3. Mesh Prisms
@@ -151,7 +160,8 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
 
       const cx = -((p.minX + p.maxX) / 2)
       const cz = (p.minY + p.maxY) / 2
-      const cy = -((p.z0 + p.z1) / 2) * layerThickness
+      const avgLayerIdx = (p.z0 + p.z1) / 2
+      const cy = -(avgLayerIdx * layerThickness + avgLayerIdx * layerGap)
 
       const color = assigner(`${p.z0}-${p.z1}`)
 
@@ -189,10 +199,15 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
     if (!nodes) return
 
     nodes.forEach(node => {
+      // Skip node if layer filtering is enabled and this layer is not visible
+      if (visibleLayers && !visibleLayers.includes(node.layer)) {
+        return
+      }
+
       const layerIdx = getLayerIndex(node)
       const px = -node.center.x 
       const pz = node.center.y  
-      const py = -(layerIdx + 0.5) * layerThickness 
+      const py = getLayerYPosition(layerIdx) 
 
       const pos = new THREE.Vector3(px, py, pz)
       nodePositions.set(node.capacityMeshNodeId, pos)
@@ -297,7 +312,7 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
       renderer.dispose()
       el.innerHTML = ""
     }
-  }, [nodes, edges, height, layerThickness, nodeSize, layerOrder, prisms])
+  }, [nodes, edges, height, layerThickness, layerGap, nodeSize, layerOrder, prisms, visibleLayers])
 
   // --- Debug Path Rendering ---
   useEffect(() => {
@@ -320,7 +335,7 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
         const layerIdx = idx >= 0 ? idx : 0
         return new THREE.Vector3(
             -x,
-            -(layerIdx + 0.5) * layerThickness,
+            getLayerYPosition(layerIdx),
             y
         )
     }
@@ -374,7 +389,7 @@ export const CapacityHybridView: React.FC<CapacityHybridViewProps> = ({
         group.add(m)
     }
 
-  }, [debugPath, layerOrder, layerThickness, nodeSize])
+  }, [debugPath, layerOrder, layerThickness, layerGap, nodeSize])
 
   // --- Style Updates ---
   useEffect(() => {

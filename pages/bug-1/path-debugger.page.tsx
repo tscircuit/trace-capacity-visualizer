@@ -37,6 +37,7 @@ export default function PathDebuggerPage() {
         edges={edges}
         height={800}
         layerThickness={1.2}
+        layerGap={0}
         nodeSize={0.25}
         precalculatedPaths={precalculatedPaths}
       />
