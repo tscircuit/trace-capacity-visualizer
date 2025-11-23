@@ -45,7 +45,7 @@ export interface SimpleRouteJson {
 }
 
 export interface Obstacle {
-  type: "rect"
+  type: "rect" | "oval"
   layers: string[]
   zLayers?: number[]
   center: { x: number; y: number }
@@ -54,6 +54,25 @@ export interface Obstacle {
   connectedTo: TraceId[]
   netIsAssignable?: boolean
   offBoardConnectsTo?: TraceId[]
+}
+
+export interface HdRouteNode {
+  x: number
+  y: number
+  z: number
+}
+
+export interface HdRoute {
+  connectionName: string
+  route: HdRouteNode[]
+  vias: Array<{ x: number; y: number }>
+  viaDiameter: number
+  traceThickness: number
+}
+
+export interface UselessViaSolverInput {
+  unsimplifiedHdRoutes: HdRoute[]
+  obstacles: Obstacle[]
 }
 
 export interface SimpleRouteConnection {
