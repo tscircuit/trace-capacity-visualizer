@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/three": "^0.170.0",
+    "@webgpu/types": "^0.1.66",
     "biome": "^0.3.3",
     "react": "^19.2.0",
     "react-cosmos": "^7.0.0",
